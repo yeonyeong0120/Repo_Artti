@@ -73,3 +73,23 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# ===== 추가 항목 =====
+
+# JetBrains Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Builds 폴더 (APK 등 빌드 결과물)
+Builds/
+
+# Logs
+Logs/
+
+# Crash Reports
+crashlytics-build.properties
