@@ -41,6 +41,9 @@ namespace Artti.Training
             scenario = ScenarioLoader.Load(scenarioFileName);
             if (scenario == null) return;
 
+            // Gemini 시스템 프롬프트 설정 (시나리오 진입 시 1회)
+            geminiService.Initialize(scenario.systemPrompt);
+
             currentStepIndex = 0;
             StartStep(currentStepIndex).Forget();
         }

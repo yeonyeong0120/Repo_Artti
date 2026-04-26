@@ -93,3 +93,7 @@ Logs/
 
 # Crash Reports
 crashlytics-build.properties
+
+# Gemini API Key (절대 커밋 금지)
+**/4AAC_gemini_api_key.txt
+**/4AAC_gemini_api_key.txt.meta

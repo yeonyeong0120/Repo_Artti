@@ -13,8 +13,8 @@ namespace Artti.Training
     public class GeminiService : MonoBehaviour
     {
         [Header("API 설정")]
-        [SerializeField] private string apiKey = ""; // Inspector에서 입력
-        [SerializeField] private string modelName = "gemini-2.0-flash";
+        [SerializeField] private string modelName = "gemini-3.0-flash";
+        private string apiKey;
 
         private string systemPrompt;
         private string cachedEndpointUrl;
@@ -26,10 +26,35 @@ namespace Artti.Training
         public void Initialize(string scenarioSystemPrompt)
         {
             systemPrompt = scenarioSystemPrompt;
+            apiKey = LoadApiKey();
             cachedEndpointUrl =
                 $"https://generativelanguage.googleapis.com/v1beta/models/{modelName}:generateContent?key={apiKey}";
 
-            Debug.Log("[Gemini] 시스템 프롬프트 설정 완료");
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                Debug.LogError("[Gemini] API 키를 찾을 수 없음. 4AAC_gemini_api_key.txt 파일을 확인하세요.");
+                return;
+            }
+
+            Debug.Log("[Gemini] 초기화 완료 (API 키 로드됨)");
+        }
+
+        private string LoadApiKey()
+        {
+            // Application.dataPath = .../ArttiAAC2026/Assets
+            // 한 단계 위로 올라가면 프로젝트 루트 (ArttiAAC2026/)
+            string filePath = System.IO.Path.Combine(
+                Application.dataPath, "..", "4AAC_gemini_api_key.txt");
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                Debug.LogError($"[Gemini] 키 파일 없음: {filePath}");
+                return null;
+            }
+
+            string key = System.IO.File.ReadAllText(filePath).Trim();
+            Debug.Log("[Gemini] API 키 파일 로드 성공");
+            return key;
         }
 
         /// <summary>
