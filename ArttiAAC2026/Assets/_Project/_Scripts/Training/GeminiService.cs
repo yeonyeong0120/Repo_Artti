@@ -41,19 +41,20 @@ namespace Artti.Training
 
         private string LoadApiKey()
         {
-            // Application.dataPath = .../ArttiAAC2026/Assets
-            // 한 단계 위로 올라가면 프로젝트 루트 (ArttiAAC2026/)
-            string filePath = System.IO.Path.Combine(
-                Application.dataPath, "..", "4AAC_gemini_api_key.txt");
+            // Resources.Load는 Editor와 빌드 모두에서 동작.
+            // Resources/gemini_key.txt 파일을 읽는다.
+            var keyAsset = Resources.Load<TextAsset>("gemini_key");
 
-            if (!System.IO.File.Exists(filePath))
+            if (keyAsset == null)
             {
-                Debug.LogError($"[Gemini] 키 파일 없음: {filePath}");
+                Debug.LogError(
+                    "[Gemini] Resources/gemini_key.txt 파일 없음. " +
+                    "Assets/_Project/Data/Resources/gemini_key.txt를 생성하세요.");
                 return null;
             }
 
-            string key = System.IO.File.ReadAllText(filePath).Trim();
-            Debug.Log("[Gemini] API 키 파일 로드 성공");
+            string key = keyAsset.text.Trim();
+            Debug.Log("[Gemini] API 키 Resources에서 로드 성공");
             return key;
         }
 
