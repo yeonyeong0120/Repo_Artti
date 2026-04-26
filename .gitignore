@@ -97,3 +97,7 @@ crashlytics-build.properties
 # Gemini API Key (절대 커밋 금지)
 **/4AAC_gemini_api_key.txt
 **/4AAC_gemini_api_key.txt.meta
+
+# Resources에 복사한 API 키 (빌드 포함용, Git 제외)
+**/Assets/_Project/Data/Resources/gemini_key.txt
+**/Assets/_Project/Data/Resources/gemini_key.txt.meta
