@@ -37,6 +37,10 @@ namespace Artti.UI
         [Header("재시도 안내")]
         [SerializeField] private TMP_Text retryPromptText;
 
+        // NPC 응답 화면의 "다음" 버튼
+        [Header("다음 버튼")]
+        [SerializeField] private Button nextButton;
+
         // -- 카드 선택 결과를 전달하기 위한 내부 상태 --
         private CardInfo[] currentCards;
         private int selectedCardIndex = -1;
@@ -57,6 +61,9 @@ namespace Artti.UI
             speechInputPanel.SetActive(false);
             completionPanel.SetActive(false);
             selectedCardIndex = -1;
+
+            // 다음버튼은 숨기기 (NPC 응답 후에만 활성화)
+            nextButton.gameObject.SetActive(false);
 
             // 상황 텍스트
             situationText.text = step.situation;
@@ -91,6 +98,25 @@ namespace Artti.UI
             return submittedSpeech;
         }
 
+        // NPC 응답 후 사용자가 "다음" 버튼을 누를 때까지 대기
+        public async UniTask WaitForNextButton(CancellationToken ct)
+        {
+            nextPressed = false;
+            nextButton.gameObject.SetActive(true);
+
+            await UniTask.WaitUntil(() => nextPressed, cancellationToken: ct);
+
+            nextButton.gameObject.SetActive(false);
+        }
+
+        // 내부 상태 + 핸들러 (다른 필드들과 같은 영역에 추가)
+        private bool nextPressed;
+
+        private void OnNextButtonClicked()
+        {
+            nextPressed = true;
+        }
+
         public void ShowNpcResponse(string response)
         {
             npcResponseText.text = $"[직원] {response}";
@@ -118,6 +144,7 @@ namespace Artti.UI
             cardButton0.onClick.AddListener(() => OnCardClicked(0));
             cardButton1.onClick.AddListener(() => OnCardClicked(1));
             speechSubmitButton.onClick.AddListener(OnSpeechSubmit);
+            nextButton.onClick.AddListener(OnNextButtonClicked);
         }
 
         private void SetupCardButton(

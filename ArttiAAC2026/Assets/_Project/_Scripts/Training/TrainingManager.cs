@@ -85,7 +85,7 @@ namespace Artti.Training
             {
                 // Rule-based: 카드 터치만으로 진행. LLM 호출 없음.
                 uiController.ShowNpcResponse(step.npcDefaultLine);
-                await UniTask.Delay(1500, cancellationToken: cts.Token);
+                await uiController.WaitForNextButton(cts.Token);
             }
 
             // 다음 Step으로
@@ -104,7 +104,7 @@ namespace Artti.Training
             if (result.pass)
             {
                 uiController.ShowNpcResponse(result.npcResponse);
-                await UniTask.Delay(1500, cancellationToken: ct);
+                await uiController.WaitForNextButton(ct); // 다음버튼 대기
                 return;
             }
 
@@ -127,7 +127,7 @@ namespace Artti.Training
                 uiController.ShowNpcResponse(step.npcDefaultLine);
             }
 
-            await UniTask.Delay(1500, cancellationToken: ct);
+            await uiController.WaitForNextButton(ct);
         }
 
         /// <summary>

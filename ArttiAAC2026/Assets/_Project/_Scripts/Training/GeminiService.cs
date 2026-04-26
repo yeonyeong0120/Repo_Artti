@@ -13,7 +13,7 @@ namespace Artti.Training
     public class GeminiService : MonoBehaviour
     {
         [Header("API 설정")]
-        [SerializeField] private string modelName = "gemini-3.0-flash";
+        [SerializeField] private string modelName = "gemini-2.5-flash-lite";
         private string apiKey;
 
         private string systemPrompt;
@@ -100,21 +100,24 @@ namespace Artti.Training
             string escaped_user = EscapeJson(userMessage);
 
             return $@"{{
-  ""system_instruction"": {{
-    ""parts"": [{{ ""text"": ""{escaped_system}"" }}]
-  }},
-  ""contents"": [
-    {{
-      ""role"": ""user"",
-      ""parts"": [{{ ""text"": ""{escaped_user}"" }}]
-    }}
-  ],
-  ""generationConfig"": {{
-    ""temperature"": 0.3,
-    ""maxOutputTokens"": 256,
-    ""responseMimeType"": ""application/json""
-  }}
-}}";
+                      ""system_instruction"": {{
+                        ""parts"": [{{ ""text"": ""{escaped_system}"" }}]
+                      }},
+                      ""contents"": [
+                        {{
+                          ""role"": ""user"",
+                          ""parts"": [{{ ""text"": ""{escaped_user}"" }}]
+                        }}
+                      ],
+                      ""generationConfig"": {{
+                        ""temperature"": 0.3,
+                        ""maxOutputTokens"": 512,
+                        ""responseMimeType"": ""application/json"",
+                        ""thinkingConfig"": {{
+                          ""thinkingBudget"": 0
+                        }}
+                      }}
+                    }}";
         }
 
         private async UniTask<string> PostRequest(string body, CancellationToken ct)
@@ -126,6 +129,10 @@ namespace Artti.Training
             request.SetRequestHeader("Content-Type", "application/json");
 
             await request.SendWebRequest().WithCancellation(ct);
+
+            // === 진단용 로그 추가 ===
+            Debug.Log($"[Gemini RAW] HTTP {request.responseCode}\n{request.downloadHandler.text}");
+            // === 진단용 로그 끝 ===
 
             if (request.result != UnityWebRequest.Result.Success)
             {
