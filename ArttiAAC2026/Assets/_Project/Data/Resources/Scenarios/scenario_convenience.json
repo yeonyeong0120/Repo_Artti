@@ -1,0 +1,95 @@
+{
+  "scenarioId": "convenience",
+  "scenarioName": "편의점",
+  "systemPrompt": "당신은 편의점 직원입니다. 발달장애인 손님을 친절하게 응대합니다. 손님의 발화가 해당 상황에 적절한지 판단하고, 반드시 아래 JSON 형식으로만 응답하세요.\n{\"pass\": true 또는 false, \"npc_response\": \"직원의 응답 문장\"}",
+  "steps": [
+    {
+      "stepIndex": 0,
+      "stepId": "1",
+      "situation": "편의점에 들어왔습니다. 직원이 인사합니다: \"어서오세요! 뭐 찾으시는 거 있으세요?\"",
+      "expectedIntent": "물건 위치를 묻거나 찾는 물건을 말하기",
+      "requiresSpeech": true,
+      "cards": [
+        {
+          "cardId": "conv_ask_location",
+          "displayText": "물건 찾기",
+          "ttsText": "삼각김밥 어디에 있어요?",
+          "isCorrect": true
+        },
+        {
+          "cardId": "conv_just_looking",
+          "displayText": "그냥 볼게요",
+          "ttsText": "그냥 둘러볼게요",
+          "isCorrect": true
+        }
+      ],
+      "npcDefaultLine": "삼각김밥은 저쪽 냉장 코너에 있어요!"
+    },
+    {
+      "stepIndex": 1,
+      "stepId": "2",
+      "situation": "물건을 골랐습니다. 계산대 앞에 섰습니다. 직원: \"계산 도와드릴게요.\"",
+      "expectedIntent": "결제 수단을 말하기",
+      "requiresSpeech": true,
+      "cards": [
+        {
+          "cardId": "conv_pay_card",
+          "displayText": "카드로 낼게요",
+          "ttsText": "카드로 계산할게요",
+          "isCorrect": true
+        },
+        {
+          "cardId": "conv_pay_cash",
+          "displayText": "현금으로 낼게요",
+          "ttsText": "현금으로 계산할게요",
+          "isCorrect": true
+        }
+      ],
+      "npcDefaultLine": "네, 카드 여기 대주세요!"
+    },
+    {
+      "stepIndex": 2,
+      "stepId": "3",
+      "situation": "계산이 끝났습니다. 직원: \"봉투 필요하세요?\"",
+      "expectedIntent": "봉투 필요 여부를 대답하기",
+      "requiresSpeech": true,
+      "cards": [
+        {
+          "cardId": "conv_bag_yes",
+          "displayText": "봉투 주세요",
+          "ttsText": "네, 봉투 하나 주세요",
+          "isCorrect": true
+        },
+        {
+          "cardId": "conv_bag_no",
+          "displayText": "괜찮아요",
+          "ttsText": "아니요, 괜찮아요",
+          "isCorrect": true
+        }
+      ],
+      "npcDefaultLine": "네, 알겠습니다!"
+    },
+    {
+      "stepIndex": 3,
+      "stepId": "4",
+      "situation": "물건을 받았습니다. 이제 인사하고 나가면 됩니다.",
+      "expectedIntent": "작별 인사",
+      "requiresSpeech": false,
+      "cards": [
+        {
+          "cardId": "conv_goodbye",
+          "displayText": "감사합니다",
+          "ttsText": "감사합니다. 안녕히 계세요.",
+          "isCorrect": true
+        },
+        {
+          "cardId": "conv_bye_short",
+          "displayText": "안녕히 계세요",
+          "ttsText": "안녕히 계세요",
+          "isCorrect": true
+        }
+      ],
+      "npcDefaultLine": "감사합니다, 또 오세요!"
+    }
+  ]
+}
