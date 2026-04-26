@@ -1108,7 +1108,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dad281c31ceb204cae7dc6e6aa7f5a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  apiKey: 
   modelName: gemini-3.0-flash
 --- !u!4 &1259595334
 Transform:
@@ -2495,17 +2494,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5d8327b2c8710246aa86f2819429902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  situationText: {fileID: 0}
-  cardButton0: {fileID: 0}
-  cardText0: {fileID: 0}
-  cardButton1: {fileID: 0}
-  cardText1: {fileID: 0}
-  speechInputPanel: {fileID: 0}
-  speechInputField: {fileID: 0}
-  speechSubmitButton: {fileID: 0}
-  npcResponseText: {fileID: 0}
-  completionPanel: {fileID: 0}
-  retryPromptText: {fileID: 0}
+  situationText: {fileID: 1881694233}
+  cardButton0: {fileID: 1900284993}
+  cardText0: {fileID: 1764239099}
+  cardButton1: {fileID: 1441756719}
+  cardText1: {fileID: 240252817}
+  speechInputPanel: {fileID: 1347797090}
+  speechInputField: {fileID: 1890084394}
+  speechSubmitButton: {fileID: 477541255}
+  npcResponseText: {fileID: 1986102752}
+  completionPanel: {fileID: 780306102}
+  retryPromptText: {fileID: 1319827009}
 --- !u!1 &2056687127
 GameObject:
   m_ObjectHideFlags: 0
