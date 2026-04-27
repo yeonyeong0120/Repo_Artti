@@ -55,20 +55,20 @@ namespace Artti.UI
 
         public void ShowStep(StepData step)
         {
-            // 초기화
+            // 모든 UI 초기화 (겹침 방지)
             npcResponseText.text = "";
             retryPromptText.text = "";
             speechInputPanel.SetActive(false);
             completionPanel.SetActive(false);
-            selectedCardIndex = -1;
-
-            // 다음버튼은 숨기기 (NPC 응답 후에만 활성화)
             nextButton.gameObject.SetActive(false);
+            cardButton0.gameObject.SetActive(false);
+            cardButton1.gameObject.SetActive(false);
+            selectedCardIndex = -1;
 
             // 상황 텍스트
             situationText.text = step.situation;
 
-            // 카드 표시
+            // 카드 표시 (데이터 있는 슬롯만 활성화)
             currentCards = step.cards;
             SetupCardButton(cardButton0, cardText0, step.cards, 0);
             SetupCardButton(cardButton1, cardText1, step.cards, 1);
@@ -80,6 +80,10 @@ namespace Artti.UI
 
             // 사용자가 카드 버튼을 누를 때까지 대기
             await UniTask.WaitUntil(() => selectedCardIndex >= 0, cancellationToken: ct);
+
+            // 선택 즉시 카드 버튼 숨기기 (이후 패널들과 겹치지 않도록)
+            cardButton0.gameObject.SetActive(false);
+            cardButton1.gameObject.SetActive(false);
 
             return currentCards[selectedCardIndex];
         }

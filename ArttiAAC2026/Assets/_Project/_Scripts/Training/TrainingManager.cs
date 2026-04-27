@@ -27,6 +27,9 @@ namespace Artti.Training
         [Header("LLM 서비스")]
         [SerializeField] private GeminiService geminiService;
 
+        [Header("TTS")]
+        [SerializeField] private TTSService ttsService;
+
         // -- 이벤트: 외부에서 구독 가능 --
         public event Action<StepData> OnStepStarted;
         public event Action OnScenarioCompleted;
@@ -83,8 +86,8 @@ namespace Artti.Training
             }
             else
             {
-                // Rule-based: 카드 터치만으로 진행. LLM 호출 없음.
                 uiController.ShowNpcResponse(step.npcDefaultLine);
+                await ttsService.Speak(step.npcDefaultLine, cts.Token);
                 await uiController.WaitForNextButton(cts.Token);
             }
 
@@ -104,7 +107,8 @@ namespace Artti.Training
             if (result.pass)
             {
                 uiController.ShowNpcResponse(result.npcResponse);
-                await uiController.WaitForNextButton(ct); // 다음버튼 대기
+                await ttsService.Speak(result.npcResponse, ct);
+                await uiController.WaitForNextButton(ct);
                 return;
             }
 
@@ -116,17 +120,13 @@ namespace Artti.Training
             var retryResult = await geminiService.JudgeSpeech(
                 step.stepId, step.expectedIntent, retrySpeech, ct);
 
-            if (retryResult.pass)
-            {
-                uiController.ShowNpcResponse(retryResult.npcResponse);
-            }
-            else
-            {
-                // 재시도 실패 -> NPC가 유도성 응답 후 강제 진행
-                Debug.Log("[Training] 재시도 실패 -> 강제 진행");
-                uiController.ShowNpcResponse(step.npcDefaultLine);
-            }
+            string finalResponse = retryResult.pass ? retryResult.npcResponse : step.npcDefaultLine;
 
+            if (!retryResult.pass)
+                Debug.Log("[Training] 재시도 실패 -> 강제 진행");
+
+            uiController.ShowNpcResponse(finalResponse);
+            await ttsService.Speak(finalResponse, ct);
             await uiController.WaitForNextButton(ct);
         }
 
