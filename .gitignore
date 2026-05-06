@@ -101,3 +101,10 @@ crashlytics-build.properties
 # Resources에 복사한 API 키 (빌드 포함용, Git 제외)
 **/Assets/_Project/Data/Resources/gemini_key.txt
 **/Assets/_Project/Data/Resources/gemini_key.txt.meta
+
+# Merged from Unity Hub generated .gitignore
+# API Keys - 절대 커밋 금지
+*gemini*key*
+*api_key*
+gemini_key.txt
+Assets/_Project/Data/Resources/gemini_key.txt
